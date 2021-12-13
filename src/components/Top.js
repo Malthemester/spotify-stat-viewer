@@ -82,17 +82,19 @@ function DisplayTop() {
     return (
         <div>
             <div className="selectText">
-                <p>Your's top artists or tracks for a</p>
-                <select onChange={handleChange} name="Time period" id="time_period" placeholder="Source Type">
-                    <option value="long_term">long period</option>
-                    <option value="medium_term">medium period</option>
-                    <option value="short_term">short period</option>
-                </select>
+                <div className="line">
+                    <p>Your's top artists or tracks for a</p>
+                    <select onChange={handleChange} name="Time period" id="time_period" placeholder="Source Type">
+                        <option value="long_term">long period</option>
+                        <option value="medium_term">medium period</option>
+                        <option value="short_term">short period</option>
+                    </select>
 
-                <button className="buttonStart" onClick={() => {
-                    // setDisplay(a => !a)
-                    fetchTop()
-                }}>Go</button>
+                    <button className="buttonStart" onClick={() => {
+                        // setDisplay(a => !a)
+                        fetchTop()
+                    }}>Go</button>
+                </div>
             </div>
 
             <div style={contentProps} className="maskTop">
