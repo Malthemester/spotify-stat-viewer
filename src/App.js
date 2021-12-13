@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import AuthButton from './components/Authorization';
+import Stats from './components/DisplayStats'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
   return (
     <div className="main">
       {!accessTime && <AuthButton></AuthButton>}
+      {accessTime && <Stats></Stats>}
     </div>
   );
 }
