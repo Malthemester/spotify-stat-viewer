@@ -43,6 +43,7 @@ function AuthButton() {
 
   return (
     <div className="login">
+      <h1>You need to login to Spotify to view your stats</h1>
       <button className="button-33" onClick={() => handleAuth()} >Login to spotify</button>
     </div>
   )

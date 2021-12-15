@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react/cjs/react.development";
 import { useSpring, animated } from "react-spring";
 
+let timeRange = 'long_term'
+let type = 'tracks'
 function DisplayTop() {
 
     const [topList, setTopList] = useState(null)
 
-    let timeRange = 'long_term'
-    let type = 'tracks'
 
     const contentProps = useSpring({
         to: async (next, cancel) => {
@@ -23,8 +23,12 @@ function DisplayTop() {
 
     let access_token = localStorage.getItem("accessToken")
 
-    function handleChange(e) {
+    function handleChangeTimeRange(e) {
         timeRange = e.target.value
+    }
+
+    function handleChangeType(e) {
+        type = e.target.value
     }
 
     function fetchTop() {
@@ -38,6 +42,7 @@ function DisplayTop() {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                 setTopList(fillTop(data))
             })
             .catch((error) => {
@@ -51,26 +56,51 @@ function DisplayTop() {
 
     function fillTop(data) {
         let topList = []
-        data.items.forEach((track, i) => {
 
-            let paragrafs = []
-            let col = []
-            let artists = ''
+        if (type == 'tracks') {
+            data.items.forEach((track, i) => {
 
-            track.artists.forEach((artist, i) => {
-                artists += (i > 0 ? ', ' : '') + artist.name
+                let paragrafs = []
+                let col = []
+                let artists = ''
+
+                track.artists.forEach((artist, i) => {
+                    artists += (i > 0 ? ', ' : '') + artist.name
+                })
+
+                col.push(<p className="topNumber">{i + 1}</p>)
+
+                paragrafs.push(<p key={i}>{track.name}</p>)
+                paragrafs.push(<p key={'by' + i}>{artists}</p>)
+
+                col.push(<div key={'margin' + i} className="margin" >{paragrafs}</div>)
+                col.push(<img key={'tImage' + i} className="trackImage" src={track.album.images[1].url} />)
+
+                topList.push(<a href={track.external_urls.spotify} target="_blank" key={'top' + i} className="track">{col}</a>)
             })
+        }
+        else {
+            data.items.forEach((artist, i) => {
 
-            col.push(<p className="topNumber">{i + 1}</p>)
+                let paragrafs = []
+                let col = []
+                let genres = ''
 
-            paragrafs.push(<p key={i}>{track.name}</p>)
-            paragrafs.push(<p key={'by' + i}>{artists}</p>)
+                artist.genres.forEach((artist, i) => {
+                    genres += (i > 0 ? ', ' : '') + artist
+                })
 
-            col.push(<div key={'margin' + i} className="margin" >{paragrafs}</div>)
-            col.push(<img key={'tImage' + i} className="trackImage" src={track.album.images[1].url} />)
+                col.push(<p className="topNumber">{i + 1}</p>)
 
-            topList.push(<div key={'top' + i} className="track">{col}</div>)
-        })
+                paragrafs.push(<a key={i}>{artist.name}</a>)
+                paragrafs.push(<p key={'genres' + i}>{genres}</p>)
+
+                col.push(<div key={'margin' + i} className="margin" >{paragrafs}</div>)
+                col.push(<img key={'tImage' + i} className="trackImage" src={artist.images[1].url} />)
+
+                topList.push(<a href={artist.external_urls.spotify} target="_blank" key={'top' + i} className="track">{col}</a>)
+            })
+        }
 
         return (
             <animated.div style={contentProps}>
@@ -83,17 +113,21 @@ function DisplayTop() {
         <div>
             <div className="selectText">
                 <div className="line">
-                    <p>Your's top artists or tracks for a</p>
-                    <select onChange={handleChange} name="Time period" id="time_period" placeholder="Source Type">
-                        <option value="long_term">long period</option>
-                        <option value="medium_term">medium period</option>
-                        <option value="short_term">short period</option>
-                    </select>
+                    <p>Your's top
+                        <select onChange={handleChangeType} name="Time period" id="time_period" placeholder="Source Type">
+                            <option value="tracks">tracks</option>
+                            <option value="artists">artists</option>
+                        </select> for a
+                        <select onChange={handleChangeTimeRange} name="Time period" id="time_period" placeholder="Source Type">
+                            <option value="long_term">long period</option>
+                            <option value="medium_term">medium period</option>
+                            <option value="short_term">short period</option>
+                        </select>
+                    </p>
 
                     <button className="buttonStart" onClick={() => {
-                        // setDisplay(a => !a)
                         fetchTop()
-                    }}>Go</button>
+                    }}>Show</button>
                 </div>
             </div>
 

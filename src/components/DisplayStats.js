@@ -6,7 +6,7 @@ const ENDPOINT_ME = "https://api.spotify.com/v1/me";
 
 function Stats() {
     const [image, setImage] = useState(null)
-    const [userName, setUserName] = useState("")
+    const [userName, setUserName] = useState("Your username")
     const [followers, setFollowers] = useState(0)
 
     let access_token = localStorage.getItem("accessToken")
