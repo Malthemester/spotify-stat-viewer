@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
-import followersImg from '../Followers.png'
-import DisplayTop from "./Top";
+import ShowTop from '../components/ShowTop'
 
 const ENDPOINT_ME = "https://api.spotify.com/v1/me";
 
 function Stats() {
     const [image, setImage] = useState(null)
     const [userName, setUserName] = useState("Your username")
-    const [followers, setFollowers] = useState(0)
-
-    let access_token = localStorage.getItem("accessToken")
 
     useEffect(() => {
+        let access_token = localStorage.getItem("accessToken")
         fetch(ENDPOINT_ME, {
             headers: {
                 Authorization: "Bearer " + access_token,
@@ -21,9 +18,7 @@ function Stats() {
             .then(response => response.json())
             .then(data => {
                 setUserName(data.display_name)
-                setFollowers(data.followers.total)
                 setImage(data.images[0].url)
-                console.log(data)
             })
             .catch((error) => {
                 console.log(error)
@@ -33,16 +28,13 @@ function Stats() {
     return (
         <div>
             <div className="header">
-                <img className="userImage" src={image} />
+                <img alt="userImg" className="userImage" src={image} />
                 <h1>{userName}</h1>
-                <img className="followerImage" src={followersImg} />
-                <p className="followerText">{followers}</p>
             </div>
 
-            <DisplayTop></DisplayTop>
+            <ShowTop></ShowTop>
         </div>
     )
-
 }
 
 export default Stats;

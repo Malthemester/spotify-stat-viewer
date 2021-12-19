@@ -1,28 +1,13 @@
-import { useState } from "react/cjs/react.development";
+import { useState } from "react"
 import { useSpring, animated } from "react-spring";
 
 let timeRange = 'long_term'
 let type = 'tracks'
-function DisplayTop() {
 
-    console.log("go2")
+function ShowTop() {
 
     const [topList, setTopList] = useState(null)
 
-    const contentProps = useSpring({
-        to: async (next, cancel) => {
-            await next({ color: 'green', y: -0, delay: 0, opacity: 0, immediate: true })
-            await next({ y: -600, delay: 0, opacity: 0 })
-            await next({ y: -480, delay: 50, opacity: 1 })
-            await next({ y: -360, delay: 400 })
-            await next({ y: -240, delay: 400 })
-            await next({ y: -120, delay: 400 })
-            await next({ y: 0, delay: 400 })
-        }
-    })
-
-
-    let access_token = localStorage.getItem("accessToken")
 
     function handleChangeTimeRange(e) {
         timeRange = e.target.value
@@ -33,6 +18,8 @@ function DisplayTop() {
     }
 
     function fetchTop() {
+        let access_token = localStorage.getItem("accessToken")
+
         const ENDPOINT_TOP_TRACKS = `https://api.spotify.com/v1/me/top/${type}?limit=5&time_range=${timeRange}`;
 
         fetch(ENDPOINT_TOP_TRACKS, {
@@ -51,6 +38,17 @@ function DisplayTop() {
             })
     }
 
+    const contentProps = useSpring({
+        to: async (next, cancel) => {
+            await next({ color: 'green', y: -0, delay: 0, opacity: 0, immediate: true })
+            await next({ y: -600, delay: 0, opacity: 0 })
+            await next({ y: -480, delay: 50, opacity: 1 })
+            await next({ y: -360, delay: 400 })
+            await next({ y: -240, delay: 400 })
+            await next({ y: -120, delay: 400 })
+            await next({ y: 0, delay: 400 })
+        }
+    })
 
     function fillTop(data) {
         let topList = []
@@ -101,7 +99,7 @@ function DisplayTop() {
         }
 
         return (
-            <animated.div style={contentProps}>
+            <animated.div className="animTop" style={contentProps}>
                 {topList}
             </animated.div>
         )
@@ -115,11 +113,11 @@ function DisplayTop() {
                         <select onChange={handleChangeType} name="Time period" id="time_period" placeholder="Source Type">
                             <option value="tracks">tracks</option>
                             <option value="artists">artists</option>
-                        </select> for a
+                        </select> for
                         <select onChange={handleChangeTimeRange} name="Time period" id="time_period" placeholder="Source Type">
-                            <option value="long_term">long period</option>
-                            <option value="medium_term">medium period</option>
-                            <option value="short_term">short period</option>
+                            <option value="long_term">several years</option>
+                            <option value="medium_term">6 monts</option>
+                            <option value="short_term">4 weeks</option>
                         </select>
                     </p>
 
@@ -129,11 +127,11 @@ function DisplayTop() {
                 </div>
             </div>
 
-            <div style={contentProps} className="maskTop">
+            <div className="maskTop">
                 {topList}
             </div>
         </div>
     )
 }
 
-export default DisplayTop
+export default ShowTop;
