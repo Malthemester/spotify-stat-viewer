@@ -69,21 +69,6 @@ h1{
   /* margin: 10px; */
 }
 
-.followerImage{
-  height: 6vmin;
-  min-height: 30px;
-  /* margin-top: 53px; */
-  /* margin-left: 20px; */
-}
-
-.followerText{
-  /* height: 40px;   */
-  /* margin-top: 59px; */
-  padding: 5px;
-  font-size: large;
-  font-weight: bold;
-}
-
 .button-33 {
   background-color: #c2fbd7;
   border-radius: 100px;
@@ -150,18 +135,6 @@ h1{
   flex-direction: column;
 }
 
-.animTop{
-  margin: 0px;
-  position: relative;
-  animation: list 5s ease-in-out;
-}
-
-.top{
-  margin: 0px;
-  position: relative;
-}
-
-
 .track{
   width: 100%;
   max-width: 500px;
@@ -225,10 +198,6 @@ h1{
 }
 
 
-.timePeriod{
-  background: white;
-}
-
 .selectText{
   display: flex;
   justify-content: center;  
@@ -281,32 +250,4 @@ option {
 
 select:hover {
   cursor: pointer;    
-}
-
-
-@keyframes list{
-  0%{
-    transform: translate(0px, -100%);
-    animation-timing-function: cubic-bezier(0.72, 0.19, 0.1, 1);
-  }
-  20%{
-    transform: translate(0px, -80%);
-    animation-timing-function: cubic-bezier(0.72, 0.19, 0.1, 1);
-  }
-  40%{
-    transform: translate(0px, -60%);
-    animation-timing-function: cubic-bezier(0.72, 0.19, 0.1, 1);
-  }
-  60%{
-    transform: translate(0px, -40%);
-    animation-timing-function: cubic-bezier(0.72, 0.19, 0.1, 1);
-  }
-  80%{
-    transform: translate(0px, -20%);
-    animation-timing-function: cubic-bezier(0.72, 0.19, 0.1, 1);
-  }
-  100%{
-    transform: translate(0px, -0%);
-    animation-timing-function: cubic-bezier(0.72, 0.19, 0.1, 1);
-  }
 }

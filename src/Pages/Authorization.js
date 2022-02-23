@@ -30,8 +30,6 @@ function AuthButton() {
       localStorage.setItem("tokenType", token_type);
       localStorage.setItem("expiresIn", new Date().getTime() + ((expires_in - 300) * 1000))
 
-      console.log(window.origin)
-
       window.location = "https://malthemester.github.io/spotify-stat-viewer/"
     }
   });

@@ -4,10 +4,24 @@ import { useSpring, animated } from "react-spring";
 let timeRange = 'long_term'
 let type = 'tracks'
 
+let first = true
+
 function ShowTop() {
 
-    const [topList, setTopList] = useState(null)
+    const contentProps = useSpring({
+        to: [
+            { y: -720, opacity: 0, immediate: first },
+            { y: -600, delay: 0, opacity: 1, immediate: false },
+            { y: -480, delay: 0 },
+            { y: -360, delay: 350 },
+            { y: -240, delay: 350 },
+            { y: -120, delay: 350 },
+            { y: 0, delay: 350 }
+        ],
+        from: { opacity: 0, immediate: first }
+    })
 
+    const [topList, setTopList] = useState();
 
     function handleChangeTimeRange(e) {
         timeRange = e.target.value
@@ -32,29 +46,18 @@ function ShowTop() {
             .then(data => {
                 console.log(data)
                 setTopList(fillTop(data))
+                first = false
             })
             .catch((error) => {
                 console.log(error)
             })
     }
 
-    const contentProps = useSpring({
-        to: async (next, cancel) => {
-            await next({ color: 'green', y: -0, delay: 0, opacity: 0, immediate: true })
-            await next({ y: -600, delay: 0, opacity: 0 })
-            await next({ y: -480, delay: 50, opacity: 1 })
-            await next({ y: -360, delay: 400 })
-            await next({ y: -240, delay: 400 })
-            await next({ y: -120, delay: 400 })
-            await next({ y: 0, delay: 400 })
-        }
-    })
-
     function fillTop(data) {
         let topList = []
 
         if (type === 'tracks') {
-            data.items.forEach((track, i) => {
+            data?.items.forEach((track, i) => {
 
                 let paragrafs = []
                 let col = []
@@ -76,7 +79,7 @@ function ShowTop() {
             })
         }
         else {
-            data.items.forEach((artist, i) => {
+            data?.items.forEach((artist, i) => {
 
                 let paragrafs = []
                 let col = []
@@ -94,12 +97,12 @@ function ShowTop() {
                 col.push(<div key={'margin' + i} className="margin" >{paragrafs}</div>)
                 col.push(<img alt="artistImg" key={'tImage' + i} className="trackImage" src={artist.images[1].url} />)
 
-                topList.push(<a key={'a' + i} href={artist.external_urls.spotify} target="_blank" rel="noreferrer" className="track">{col}</a>)
+                topList.push(<a key={'akey' + i} href={artist.external_urls.spotify} target="_blank" rel="noreferrer" className="track">{col}</a>)
             })
         }
 
         return (
-            <animated.div className="animTop" style={contentProps}>
+            <animated.div key={Math.random(1000)} className="animTop" style={contentProps}>
                 {topList}
             </animated.div>
         )
