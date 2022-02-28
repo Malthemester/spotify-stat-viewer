@@ -44,7 +44,7 @@ function ShowTop() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 setTopList(fillTop(data))
                 first = false
             })
