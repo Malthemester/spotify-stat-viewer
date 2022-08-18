@@ -119,7 +119,7 @@ function ShowTop() {
                         </select> for
                         <select onChange={handleChangeTimeRange} name="Time period" id="time_period" placeholder="Source Type">
                             <option value="long_term">several years</option>
-                            <option value="medium_term">6 monts</option>
+                            <option value="medium_term">6 month</option>
                             <option value="short_term">4 weeks</option>
                         </select>
                     </p>
@@ -128,6 +128,7 @@ function ShowTop() {
                         fetchTop()
                     }}>Show</button>
                 </div>
+
             </div>
 
             <div className="maskTop">
