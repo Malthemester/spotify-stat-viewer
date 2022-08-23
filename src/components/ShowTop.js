@@ -22,6 +22,7 @@ function ShowTop() {
     })
 
     const [topList, setTopList] = useState();
+    const [histroy, setHistroy] = useState(false);
 
     function handleChangeTimeRange(e) {
         timeRange = e.target.value
@@ -128,6 +129,8 @@ function ShowTop() {
                         fetchTop()
                     }}>Show</button>
                 </div>
+
+                <button onClick={() => { setHistroy(true) }}>History</button>
 
             </div>
 
