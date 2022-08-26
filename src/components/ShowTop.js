@@ -1,8 +1,11 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSpring, animated } from "react-spring";
+
+import fillHistory from "./ShowHistory"
 
 let timeRange = 'long_term'
 let type = 'tracks'
+let time_period = 'curent'
 
 let first = true
 
@@ -22,7 +25,6 @@ function ShowTop() {
     })
 
     const [topList, setTopList] = useState();
-    const [histroy, setHistroy] = useState(false);
 
     function handleChangeTimeRange(e) {
         timeRange = e.target.value
@@ -31,6 +33,12 @@ function ShowTop() {
     function handleChangeType(e) {
         type = e.target.value
     }
+
+    function handleChangeTimePeriod(e) {
+        console.log(e.target.value)
+        time_period = e.target.value
+    }
+
 
     function fetchTop() {
         let access_token = localStorage.getItem("accessToken")
@@ -45,13 +53,86 @@ function ShowTop() {
         })
             .then(response => response.json())
             .then(data => {
-                // console.log(data)
+                console.log(data)
+
                 setTopList(fillTop(data))
                 first = false
             })
             .catch((error) => {
                 console.log(error)
             })
+    }
+
+    function fetchHistory() {
+
+        let history = JSON.parse(localStorage.getItem("history")) ?? []
+
+        let haveToday = false
+        history.forEach((entry) => {
+            console.log(new Date(Date.now()).toDateString())
+            if (entry["Date"] == new Date(Date.now()).toDateString()) {
+                setTopList(fillHistory(history, type, timeRange))
+                haveToday = true
+                return
+            }
+        })
+
+        if (haveToday) {
+            return
+        }
+
+        let access_token = localStorage.getItem("accessToken")
+
+        const endpoints_Histroy = [
+            `https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=long_term`,
+            `https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=medium_term`,
+            `https://api.spotify.com/v1/me/top/tracks?limit=5&time_range=short_term`,
+            `https://api.spotify.com/v1/me/top/artists?limit=5&time_range=long_term`,
+            `https://api.spotify.com/v1/me/top/artists?limit=5&time_range=medium_term`,
+            `https://api.spotify.com/v1/me/top/artists?limit=5&time_range=short_term`
+        ]
+
+        const entrys = []
+        var promises = [];
+
+        endpoints_Histroy.forEach(endpoint => {
+
+            promises.push(fetch(
+                endpoint, {
+                headers: {
+                    Authorization: "Bearer " + access_token,
+                    "Content-Type": "application/json"
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    type = endpoint.includes('artists') ? 'artists' : 'tracks'
+                    timeRange = endpoint.includes('long_term') ? 'long_term' : endpoint.includes('medium_term') ? 'medium_term' : 'short_term'
+                    entrys.push({ type: type, timeRange: timeRange, data: data })
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+            )
+        })
+        Promise.all(promises).then(() => {
+            let history = JSON.parse(localStorage.getItem("history")) ?? []
+
+            let today = new Date(Date.now()).toDateString()
+
+            history.push({ Entrys: entrys, Date: today })
+
+            localStorage.setItem("history", JSON.stringify(history))
+
+            setTopList(fillHistory(history, type, timeRange))
+
+        })
+    }
+
+    function history() {
+        let history = JSON.parse(localStorage.getItem("history")) ?? []
+        setTopList(fillHistory(history, type, timeRange))
+
     }
 
     function fillTop(data) {
@@ -113,8 +194,12 @@ function ShowTop() {
         <div>
             <div className="selectText">
                 <div className="line">
-                    <p>Your's top
-                        <select onChange={handleChangeType} name="Time period" id="time_period" placeholder="Source Type">
+                    <p>Your
+                        <select onChange={handleChangeTimePeriod} name="Curent" id="time_period" placeholder="Source Type">
+                            <option value="curent">curent</option>
+                            <option value="past">past</option>
+                        </select> top
+                        <select onChange={handleChangeType} name="Type" id="type" placeholder="Source Type">
                             <option value="tracks">tracks</option>
                             <option value="artists">artists</option>
                         </select> for
@@ -126,12 +211,10 @@ function ShowTop() {
                     </p>
 
                     <button className="buttonStart" onClick={() => {
-                        fetchTop()
+                        console.log(time_period)
+                        time_period == "curent" ? fetchTop() : fetchHistory()
                     }}>Show</button>
                 </div>
-
-                <button onClick={() => { setHistroy(true) }}>History</button>
-
             </div>
 
             <div className="maskTop">
