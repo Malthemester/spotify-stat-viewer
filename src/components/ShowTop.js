@@ -5,7 +5,7 @@ import fillHistory from "./ShowHistory"
 
 let timeRange = 'long_term'
 let type = 'tracks'
-let time_period = 'curent'
+let time_period = 'current'
 
 let first = true
 
@@ -195,8 +195,8 @@ function ShowTop() {
             <div className="selectText">
                 <div className="line">
                     <p>Your
-                        <select onChange={handleChangeTimePeriod} name="Curent" id="time_period" placeholder="Source Type">
-                            <option value="curent">curent</option>
+                        <select onChange={handleChangeTimePeriod} name="current" id="time_period" placeholder="Source Type">
+                            <option value="current">current</option>
                             <option value="past">past</option>
                         </select> top
                         <select onChange={handleChangeType} name="Type" id="type" placeholder="Source Type">
@@ -205,14 +205,14 @@ function ShowTop() {
                         </select> for
                         <select onChange={handleChangeTimeRange} name="Time period" id="time_period" placeholder="Source Type">
                             <option value="long_term">several years</option>
-                            <option value="medium_term">6 month</option>
+                            <option value="medium_term">6 months</option>
                             <option value="short_term">4 weeks</option>
                         </select>
                     </p>
 
                     <button className="buttonStart" onClick={() => {
                         console.log(time_period)
-                        time_period == "curent" ? fetchTop() : fetchHistory()
+                        time_period == "current" ? fetchTop() : fetchHistory()
                     }}>Show</button>
                 </div>
             </div>
