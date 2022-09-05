@@ -39,7 +39,6 @@ function ShowTop() {
         time_period = e.target.value
     }
 
-
     function fetchTop() {
         let access_token = localStorage.getItem("accessToken")
 
@@ -53,8 +52,7 @@ function ShowTop() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
-
+                // console.log(data)
                 setTopList(fillTop(data))
                 first = false
             })
@@ -69,7 +67,6 @@ function ShowTop() {
 
         let haveToday = false
         history.forEach((entry) => {
-            console.log(new Date(Date.now()).toDateString())
             if (entry["Date"] == new Date(Date.now()).toDateString()) {
                 setTopList(fillHistory(history, type, timeRange))
                 haveToday = true
@@ -117,22 +114,14 @@ function ShowTop() {
         })
         Promise.all(promises).then(() => {
             let history = JSON.parse(localStorage.getItem("history")) ?? []
-
             let today = new Date(Date.now()).toDateString()
 
             history.push({ Entrys: entrys, Date: today })
-
             localStorage.setItem("history", JSON.stringify(history))
 
             setTopList(fillHistory(history, type, timeRange))
 
         })
-    }
-
-    function history() {
-        let history = JSON.parse(localStorage.getItem("history")) ?? []
-        setTopList(fillHistory(history, type, timeRange))
-
     }
 
     function fillTop(data) {
@@ -211,9 +200,9 @@ function ShowTop() {
                     </p>
 
                     <button className="buttonStart" onClick={() => {
-                        console.log(time_period)
                         time_period == "current" ? fetchTop() : fetchHistory()
-                    }}>Show</button>
+                    }
+                    }>Show</button>
                 </div>
             </div>
 

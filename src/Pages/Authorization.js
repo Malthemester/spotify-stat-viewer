@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 const client_id = `8388f4a4228342fa9111a25e71147bdd`
 const urlEndPoint = 'https://accounts.spotify.com/authorize'
-const redirect_uri = 'https://malthemester.github.io/spotify-stat-viewer/'
-// const redirect_uri = 'http://localhost:3000/'
+// const redirect_uri = 'https://malthemester.github.io/spotify-stat-viewer/'
+const redirect_uri = 'http://localhost:3000/'
 const SPACE_DELIMITER = "%20";
 const SCOPES = ["playlist-read-private", "user-read-private", "user-top-read"];
 const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);

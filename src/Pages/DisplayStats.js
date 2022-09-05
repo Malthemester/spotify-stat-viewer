@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ShowTop from '../components/ShowTop'
+import DownloadHistory from '../components/DownloadHistory'
 
 const ENDPOINT_ME = "https://api.spotify.com/v1/me";
 
@@ -27,14 +28,17 @@ function Stats() {
     }, [])
 
     return (
-        <div>
-            <div className="header">
+        <div >
+            <div className="header" >
                 <img alt="userImg" className="userImage" src={image} />
                 <h1>{userName}</h1>
             </div>
 
             <ShowTop></ShowTop>
-        </div>
+            <DownloadHistory></DownloadHistory>
+
+        </div >
+
     )
 }
 

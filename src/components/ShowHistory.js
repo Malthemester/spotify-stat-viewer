@@ -1,7 +1,3 @@
-import { useState } from "react"
-
-
-
 function fillTrack(data) {
 
     let tracks = []
@@ -65,14 +61,7 @@ function fillHistory(entrys, type, time_range) {
     entrys.forEach(history => {
 
         history["Entrys"].forEach((entry) => {
-            console.log(entry)
-            console.log(entry["type"])
-            console.log(entry["timeRange"])
             if (entry["type"] === type && entry["timeRange"] == time_range) {
-                // let date = new Date(history["Date"]).toDateString()
-
-                // console.log(date)
-
                 let fill = fillFunction(entry.data)
                 historyList.push(<div className="historyChild">{history["Date"]}{fill}</div>)
             }
@@ -83,9 +72,7 @@ function fillHistory(entrys, type, time_range) {
 
     return (
         <div className="historyContainter">
-
             {historyList}
-
         </div>
     )
 }
